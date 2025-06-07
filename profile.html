@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - View</title>
+  <style>
+    :root {
+      --bg-color: #fff;
+      --text-color: #222;
+      --card-color: #f9f9f9;
+      --primary-color: #667eea;
+    }
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #f3f3f3;
+      --card-color: #1e1e1e;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: 0.3s;
+    }
+    .profile-header {
+      background: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d') no-repeat center center/cover;
+      height: 180px;
+      position: relative;
+    }
+    .profile-info {
+      background-color: var(--card-color);
+      max-width: 600px;
+      margin: -60px auto 20px;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+    .profile-info img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 5px solid var(--bg-color);
+      margin-top: -80px;
+      object-fit: cover;
+    }
+    .profile-info h2,
+    .profile-info p {
+      margin: 10px 0;
+    }
+    .dark-toggle,
+    .edit-btn {
+      position: absolute;
+      top: 15px;
+      padding: 8px 12px;
+      background: #444;
+      color: white;
+      font-size: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .dark-toggle {
+      right: 15px;
+    }
+    .edit-btn {
+      left: 15px;
+      text-decoration: none;
+      line-height: 1.3;
+      display: inline-block;
+    }
+    .tab-container {
+      max-width: 600px;
+      margin: auto;
+      background-color: var(--card-color);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      color: var(--text-color);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+    .tabs button.active {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+    .tab-content {
+      display: none;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .skill-tags span {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin: 5px;
+    }
+    ul.project-list {
+      padding-left: 20px;
+    }
+    ul.project-list li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-header"></div>
+
+  <div class="profile-info">
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌓</button>
+    <a href="edit-profile.html" class="edit-btn" title="Edit Profile">✏️ Edit Profile</a>
+    <img id="avatar" src="" alt="Profile" />
+    <h2 id="name"></h2>
+    <p id="role"></p>
+  </div>
+
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('about')">About</button>
+      <button class="tab-btn" onclick="showTab('skills')">Skills</button>
+      <button class="tab-btn" onclick="showTab('projects')">Projects</button>
+    </div>
+
+    <div class="tab-content active" id="about"></div>
+    <div class="tab-content" id="skills"></div>
+    <div class="tab-content" id="projects"></div>
+  </div>
+
+  <script>
+    const profileData = {
+      name: "Shree Bhargav",
+      role: "Android Developer | Team Lead",
+      avatar: "IMG_2892.JPG",
+      about: "Hello! I’m Shree, a passionate Android developer with over 2 years of experience leading mobile teams, delivering high-performance apps, and mentoring junior developers.",
+      skills: ["Kotlin", "Jetpack Compose", "Java", "SQL", "Firebase", "Leadership"],
+      projects: [
+        "📱 PozoApp – Invoice & Payment Manager",
+        "🛍️ SmartSales – Product & Order Management",
+        "🎓 Learnify – E-learning app (personal project)"
+      ]
+    };
+
+    function loadProfile() {
+      document.getElementById("name").innerText = profileData.name;
+      document.getElementById("role").innerText = profileData.role;
+      document.getElementById("avatar").src = profileData.avatar;
+
+      document.getElementById("about").innerText = profileData.about;
+
+      
+      const skillsContainer = document.getElementById("skills");
+      skillsContainer.innerHTML = "";
+      profileData.skills.forEach(skill => {
+        const span = document.createElement("span");
+        span.textContent = skill;
+        skillsContainer.appendChild(span);
+      });
+
+      const projectsContainer = document.getElementById("projects");
+      projectsContainer.innerHTML = "<ul class='project-list'></ul>";
+      const ul = projectsContainer.querySelector("ul");
+      profileData.projects.forEach(proj => {
+        const li = document.createElement("li");
+        li.textContent = proj;
+        ul.appendChild(li);
+      });
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+      document.getElementById(tabId).classList.add("active");
+      event.target.classList.add("active");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+   
+      
+      if(document.body.classList.contains("dark")) {
+        localStorage.setItem("darkMode", "true");
+      } else {
+        localStorage.setItem("darkMode", "false");
+      }
+    }
+
+    
+    
+    if(localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark");
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>
