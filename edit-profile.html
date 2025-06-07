@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profile - Edit</title>
+  <title>Profile - View</title>
   <style>
     :root {
       --bg-color: #fff;
@@ -22,208 +22,209 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       transition: 0.3s;
-      padding: 20px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      box-sizing: border-box;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: 600;
+    .profile-header {
+      background: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d') no-repeat center center/cover;
+      height: 180px;
+      position: relative;
     }
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      font-size: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    .profile-info {
       background-color: var(--card-color);
-      color: var(--text-color);
-      resize: vertical;
-      transition: background-color 0.3s, color 0.3s;
-      box-sizing: border-box;
+      max-width: 600px;
+      margin: -60px auto 20px;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
     }
-    textarea {
-      min-height: 80px;
+    .profile-info img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 5px solid var(--bg-color);
+      margin-top: -80px;
+      object-fit: cover;
     }
-    button {
-      margin-top: 20px;
-      background-color: var(--primary-color);
-      color: white;
-      font-weight: 600;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
+    .profile-info h2,
+    .profile-info p {
+      margin: 10px 0;
     }
-    .dark-toggle {
-      position: fixed;
+    .dark-toggle,
+    .edit-btn {
+      position: absolute;
       top: 15px;
-      right: 15px;
       padding: 8px 12px;
       background: #444;
       color: white;
-      font-size: 14px;
+      font-size: 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      z-index: 1000;
-      width: auto;
-      min-width: 40px;
-      height: 36px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .back-link {
-      display: inline-block;
-      margin-top: 15px;
-      color: var(--primary-color);
+    .dark-toggle {
+      right: 15px;
+    }
+    .edit-btn {
+      left: 15px;
       text-decoration: none;
-      font-weight: 600;
+      line-height: 1.3;
+      display: inline-block;
     }
-    .avatar-preview {
-      margin-top: 10px;
-      max-width: 150px;
-      max-height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary-color);
+    .tab-container {
+      max-width: 600px;
+      margin: auto;
+      background-color: var(--card-color);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      color: var(--text-color);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+    .tabs button.active {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+    .tab-content {
+      display: none;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .tab-content.active {
       display: block;
     }
-
-
-    @media (max-width: 640px) {
-      body {
-        padding: 15px 10px;
-      }
-      button {
-        font-size: 14px;
-        padding: 10px;
-      }
+    .skill-tags span {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin: 5px;
+    }
+    ul.project-list {
+      padding-left: 20px;
+    }
+    ul.project-list li {
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <button class="dark-toggle" onclick="toggleDarkMode()">🌓</button>
+  <div class="profile-header"></div>
 
-  <h1>Edit Profile</h1>
+  <div class="profile-info">
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌓</button>
+    <a href="edit-profile.html" class="edit-btn" title="Edit Profile">✏️ Edit Profile</a>
+    <img id="avatar" src="" alt="Profile" />
+    <h2 id="name"></h2>
+    <p id="role"></p>
+  </div>
 
-  <form id="editForm">
-    <label for="name">Full Name</label>
-    <input type="text" id="name" name="name" required />
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('about')">About</button>
+      <button class="tab-btn" onclick="showTab('skills')">Skills</button>
+      <button class="tab-btn" onclick="showTab('projects')">Projects</button>
+    </div>
 
-    <label for="role">Role</label>
-    <input type="text" id="role" name="role" required />
-
-    <label for="avatar">Avatar Image URL</label>
-    <input type="text" id="avatar" name="avatar" placeholder="Or upload image below" />
-
-    <label for="avatarUpload">Upload Avatar Image</label>
-    <input type="file" id="avatarUpload" accept="image/*" />
-
-    <img id="avatarPreview" class="avatar-preview" src="" alt="Avatar Preview" />
-
-    <label for="about">About</label>
-    <textarea id="about" name="about" required></textarea>
-
-    <label for="skills">Skills (comma separated)</label>
-    <input type="text" id="skills" name="skills" placeholder="e.g. Kotlin, Java, Firebase" required />
-
-    <label for="projects">Projects (comma separated)</label>
-    <input type="text" id="projects" name="projects" placeholder="e.g. PozoApp, SmartSales" required />
-
-    <button type="submit">Save Profile</button>
-  </form>
-
-  <a href="index.html" class="back-link">← Back to Profile</a>
+    <div class="tab-content active" id="about"></div>
+    <div class="tab-content" id="skills"></div>
+    <div class="tab-content" id="projects"></div>
+  </div>
 
   <script>
-    const form = document.getElementById("editForm");
-    const avatarInput = document.getElementById("avatar");
-    const avatarUpload = document.getElementById("avatarUpload");
-    const avatarPreview = document.getElementById("avatarPreview");
-
+    // Default profile data
     const defaultProfile = {
       name: "Shree Bhargav",
       role: "Android Developer | Team Lead",
-      avatar: "https://i.pravatar.cc/150?img=5",
+      avatar: "https://i.pravatar.cc/150?img=5",  // fallback avatar image
       about: "Hello! I’m Shree, a passionate Android developer with over 2 years of experience leading mobile teams, delivering high-performance apps, and mentoring junior developers.",
       skills: ["Kotlin", "Jetpack Compose", "Java", "SQL", "Firebase", "Leadership"],
-      projects: ["PozoApp – Invoice & Payment Manager", "SmartSales – Product & Order Management", "Learnify – E-learning app (personal project)"]
+      projects: [
+        "📱 PozoApp – Invoice & Payment Manager",
+        "🛍️ SmartSales – Product & Order Management",
+        "🎓 Learnify – E-learning app (personal project)"
+      ]
     };
 
-    function getProfile() {
+    // Get saved profile data from localStorage or fallback to default
+    function getProfileData() {
       const saved = localStorage.getItem("profileData");
-      if(saved) return JSON.parse(saved);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return defaultProfile;
+        }
+      }
       return defaultProfile;
     }
 
-    function saveProfile(profile) {
-      localStorage.setItem("profileData", JSON.stringify(profile));
+    // Load profile data into page elements
+    function loadProfile() {
+      const profileData = getProfileData();
+
+      document.getElementById("name").innerText = profileData.name;
+      document.getElementById("role").innerText = profileData.role;
+      document.getElementById("avatar").src = profileData.avatar || defaultProfile.avatar;
+
+      document.getElementById("about").innerText = profileData.about;
+
+      const skillsContainer = document.getElementById("skills");
+      skillsContainer.innerHTML = "";
+      profileData.skills.forEach(skill => {
+        const span = document.createElement("span");
+        span.textContent = skill;
+        skillsContainer.appendChild(span);
+      });
+
+      const projectsContainer = document.getElementById("projects");
+      projectsContainer.innerHTML = "<ul class='project-list'></ul>";
+      const ul = projectsContainer.querySelector("ul");
+      profileData.projects.forEach(proj => {
+        const li = document.createElement("li");
+        li.textContent = proj;
+        ul.appendChild(li);
+      });
     }
 
-    function fillForm() {
-      const p = getProfile();
-      form.name.value = p.name;
-      form.role.value = p.role;
-      form.avatar.value = p.avatar;
-      form.about.value = p.about;
-      form.skills.value = p.skills.join(", ");
-      form.projects.value = p.projects.join(", ");
-      avatarPreview.src = p.avatar || "";
+
+    function showTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+      document.getElementById(tabId).classList.add("active");
+      event.target.classList.add("active");
     }
-
-    avatarUpload.addEventListener("change", e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        avatarPreview.src = event.target.result;
-        avatarInput.value = event.target.result; 
-      };
-      reader.readAsDataURL(file);
-    });
-
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const newProfile = {
-        name: form.name.value.trim(),
-        role: form.role.value.trim(),
-        avatar: form.avatar.value.trim(),
-        about: form.about.value.trim(),
-        skills: form.skills.value.split(",").map(s => s.trim()).filter(s => s),
-        projects: form.projects.value.split(",").map(p => p.trim()).filter(p => p),
-      };
-      saveProfile(newProfile);
-      alert("Profile saved! Returning to profile page.");
-      window.location.href = "index.html";
-    });
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark");
-      if(document.body.classList.contains("dark")) {
+      if (document.body.classList.contains("dark")) {
         localStorage.setItem("darkMode", "true");
       } else {
         localStorage.setItem("darkMode", "false");
       }
     }
-    if(localStorage.getItem("darkMode") === "true") {
+
+    if (localStorage.getItem("darkMode") === "true") {
       document.body.classList.add("dark");
     }
 
-    fillForm();
+    loadProfile();
   </script>
 </body>
 </html>
